@@ -38,9 +38,9 @@ for f in $files; do
   fi
 done
 
-echo "Uploading files from '$destination' to device '$device'..."
-for file in $(find "$destination" -type f); do
-  ampy --port "$device" put "$file" "/$(basename $file)"
+echo "Uploading files to device '$device'..."
+for file in $(find "$destination"); do
+  ampy --port "$device" put "$file"
 done
 
 echo "Uploading config file as '.env'..."
