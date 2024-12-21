@@ -1,0 +1,42 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+  echo "Usage: qx-backup <device>"
+  exit 1
+fi
+
+device="$1"
+clean_device=$(echo "$device" | tr '/' '_')
+timestamp=$(date +"%Y-%m-%d_%H-%M-%S")
+backup_folder="backup-${clean_device}-${timestamp}"
+
+mkdir -p "$backup_folder"
+
+echo "Creating backup in folder: $backup_folder"
+
+data_exists=$(ampy --port "$device" ls / | grep -w "/data")
+if [ -n "$data_exists" ]; then
+  echo "Copying /data from device..."
+  mkdir -p "$backup_folder/data"
+  for file in $(ampy --port "$device" ls /data); do
+    ampy --port "$device" get "/data/$file" > "$backup_folder/data/$(basename $file)"
+  done
+else
+  echo "No /data folder found on device."
+fi
+
+if ampy --port "$device" ls / | grep -w -q "/.env"; then
+  echo "Copying /.env from device..."
+  ampy --port "$device" get "/.env" > "$backup_folder/.env"
+else
+  echo "No /.env file found on device."
+fi
+
+if ampy --port "$device" ls / | grep -w -q "/HISTORY"; then
+  echo "Copying /HISTORY from device..."
+  ampy --port "$device" get "/HISTORY" > "$backup_folder/HISTORY"
+else
+  echo "No /HISTORY file found on device."
+fi
+
+echo "Backup completed successfully."

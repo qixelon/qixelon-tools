@@ -1,0 +1,49 @@
+#!/bin/bash
+
+if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
+  echo "Usage: qx-flash <img> <config> <device>"
+  exit 1
+fi
+
+img="$1"
+config="$2"
+device="$3"
+destination="/tmp/qixelon-flasher"
+
+if [ ! -f "$img" ]; then
+  echo "Error: Image file '$img' does not exist."
+  exit 1
+fi
+
+if [ ! -f "$config" ]; then
+  echo "Error: Config file '$config' does not exist."
+  exit 1
+fi
+
+mkdir -p "$destination"
+
+echo "Extracting image '$img' to $destination"
+tar -xf "$img" -C "$destination"
+
+echo "Listing files on device '$device'..."
+files=$(ampy --port "$device" ls /)
+
+for f in $files; do
+  if [ "$f" != "/data" ] && [ "$f" != "/HISTORY" ]; then
+    if [ "$f" == "/src" ] || [ "$f" == "/web" ]; then
+      ampy --port "$device" rmdir "$f"
+    else
+      ampy --port "$device" rm "$f"
+    fi
+  fi
+done
+
+echo "Uploading files from '$destination' to device '$device'..."
+for file in $(find "$destination" -type f); do
+  ampy --port "$device" put "$file" "/$(basename $file)"
+done
+
+echo "Uploading config file as '.env'..."
+ampy --port "$device" put "$config" "/.env"
+
+echo "Process completed successfully."

@@ -1,0 +1,33 @@
+#!/bin/bash
+
+echo "Qixelon Tools for Linux v0.1.0"
+echo ""
+echo "Available commands:"
+echo "qx-tools - Print this help message"
+
+echo ""
+echo "qx-flash - Utility for flashing .img files on Qixelon printers motherboard"
+echo "Usage: qx-flash <img> <config> <device>"
+echo "<img> - Path to Firmware .img file. All .img files are universal for all Qixelon printers."
+echo "<config> - Path to Config file containing printer upgrade information (e.g., fans, LEDs)."
+echo "           Can be obtained from qx-backup or GitHub. Warning: This file is not universal."
+echo "           Flashing an incorrect file may result in hardware damage."
+echo "<device> - Path to the device (e.g., /dev/ttyACM0, /dev/ttyUSB0). Use lsusb to determine the correct one."
+
+echo ""
+echo "qx-backup - Create a backup of a Qixelon printer"
+echo "Usage: qx-backup <device>"
+echo "<device> - Path to the device (e.g., /dev/ttyACM0, /dev/ttyUSB0)."
+echo "           Backs up the /data folder, .env file, and HISTORY file from the printer to a local directory."
+
+echo ""
+echo "qx-history - Retrieve printing statistics from a Qixelon printer"
+echo "Usage: qx-history <device>"
+echo "<device> - Path to the device (e.g., /dev/ttyACM0, /dev/ttyUSB0)."
+echo "           Displays total print time (in seconds) and filament used (in mm) based on the HISTORY file."
+
+echo ""
+echo "qx-erase - Erase data folder from a Qixelon printer"
+echo "Usage: qx-erase <device>"
+echo "<device> - Path to the device (e.g., /dev/ttyACM0, /dev/ttyUSB0)."
+echo "           Removes the /data directory from the printer, if it exists."

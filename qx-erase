@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+  echo "Usage: qx-erase <device>"
+  exit 1
+fi
+
+device="$1"
+
+files=$(ampy --port "$device" ls /)
+
+for f in $files; do
+  if [ "$f" == "/data" ]; then
+    ampy --port "$device" rmdir "$f"
+  fi
+done

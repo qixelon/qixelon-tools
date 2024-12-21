@@ -1,0 +1,31 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+  echo "Usage: qx-history <device>"
+  exit 1
+fi
+
+device="$1"
+
+files=$(ampy --port "$device" ls /)
+
+for f in $files; do
+  if [ "$f" == "/HISTORY" ]; then
+    history_content=$(ampy --port "$device" get "$f")
+
+    total_print_time=$(echo "$history_content" | cut -d'|' -f2)
+    total_filament=$(echo "$history_content" | cut -d'|' -f3)
+
+    hours=$((total_print_time / 3600))
+    minutes=$(((total_print_time % 3600) / 60))
+    seconds=$((total_print_time % 60))
+
+    echo "Manual modification of the history file will void the warranty."
+    echo "Total Print Time: $hours hours, $minutes minutes, $seconds seconds"
+    echo "Total Filament Used: $total_filament mm"
+    exit 0
+  fi
+done
+
+echo "Error: HISTORY file not found on the device."
+exit 1
