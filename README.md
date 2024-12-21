@@ -7,10 +7,9 @@ Simple .img firmware flasher for ESP32-C6 based Qixelon 3D printers.
 ### How to Install
 Script uses [pipx](https://command-not-found.com/pipx). Install it before use.
 
+```bash
 pipx install ampy
 pipx ensurepath
-
-```bash
 git clone https://github.com/qixelon/qixelon-tools
 cd qixelon-tools
 chmod +x qx-*
