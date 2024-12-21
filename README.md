@@ -11,8 +11,8 @@ pipx install ampy
 pipx ensurepath
 
 ```bash
-git clone https://github.com/qixelon/qixelon-flasher
-cd qixelon-flasher
+git clone https://github.com/qixelon/qixelon-tools
+cd qixelon-tools
 chmod +x qx-*
 cp qx-* ~/.local/bin
 ```
