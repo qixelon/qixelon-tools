@@ -10,12 +10,12 @@ Script uses [pipx](https://command-not-found.com/pipx). Install it before use.
 pipx install ampy
 pipx ensurepath
 
-'''
+```bash
 git clone https://github.com/qixelon/qixelon-flasher
 cd qixelon-flasher
 chmod +x qx-*
 cp qx-* ~/.local/bin
-'''
+```
 
 ### How to Use
 
